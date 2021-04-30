@@ -270,10 +270,17 @@ namespace patterns
 		    "dmomm-4104-5135",
 		    "51 56 6A 14 8B F1 E8 ?? ?? ?? ?? 8B 54 24 10 8B C8 0F B7 02 89 44 24 10 83 C4 04 89 4C 24 04 DB 44 24 0C",
 		    "5377866",
-		    "55 8B EC 51 56 57 6A 14 89 4D FC E8 ?? ?? ?? ?? 8B 7D 08 8B F0");
-		PATTERNS(CViewEffects__Shake,
-		         "4104-5135",
-		         "56 8B 74 24 08 8B 06 85 C0 57 8B F9 74 05 83 F8 04 75 54 83 7F 24 20 7D 4E 6A 28");
+		    "55 8B EC 51 56 57 6A 14 89 4D FC E8 ?? ?? ?? ?? 8B 7D 08 8B F0",
+		    "4044",
+		    "53 55 56 57 6A 14 8B F1 E8 ?? ?? ?? ?? 8B 4C 24 18 8B F8");
+		PATTERNS(
+		    CViewEffects__Shake,
+		    "4104-5135",
+		    "56 8B 74 24 08 8B 06 85 C0 57 8B F9 74 05 83 F8 04 75 54 83 7F 24 20 7D 4E 6A 28",
+		    "5377866",
+		    "55 8B EC 56 8B 75 ?? 57 8B F9 8B 06 85 C0 74 05 83 F8 04 75 58 83 7F 24 20 7D 52 6A 28",
+		    "4044",
+		    "53 55 56 57 8B 7C 24 ?? 8B 07 33 ED 3B C5 8B F1 0F 85 AF 00 00 00 83 7E 24 20 0F 8D A5 00 00 00 6A 24");
 		PATTERNS(
 		    CHudDamageIndicator__GetDamagePosition,
 		    "4044-5135",
