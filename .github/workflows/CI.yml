@@ -12,28 +12,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        Configuration: [Debug, Debug BMS, Debug 2013, Debug OE, Debug P2, Release, Release BMS, Release 2013, Release OE, Release P2]
+        Configuration: [Release BMS, Release 2013]
         include:
-          - Configuration: Debug
-            SDK: orangebox
-          - Configuration: Debug BMS
-            SDK: bms
-          - Configuration: Debug 2013
-            SDK: sdk2013
-          - Configuration: Debug OE
-            SDK: episode1
-          - Configuration: Debug P2
-            SDK: portal2
-          - Configuration: Release
-            SDK: orangebox
           - Configuration: Release BMS
             SDK: bms
           - Configuration: Release 2013
             SDK: sdk2013
-          - Configuration: Release OE
-            SDK: episode1
-          - Configuration: Release P2
-            SDK: portal2
     steps:
     - name: Checkout SPT
       uses: actions/checkout@v2
@@ -52,10 +36,3 @@ jobs:
       with:
         name: ${{ matrix.Configuration }} - ${{ env.spt_filename }}
         path: ${{ matrix.Configuration }}\${{ env.spt_filename }}.dll
-
-  Format:
-    runs-on: ubuntu-18.04
-    steps:
-    - uses: actions/checkout@v2
-    - name: Format
-      run: python run-clang-format.py --clang-format-executable clang-format-8 --recursive spt
