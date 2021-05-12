@@ -98,6 +98,27 @@ int __cdecl ServerDLL::HOOKED_DispatchSpawn(void* pEntity)
 	return serverDLL.ORIG_DispatchSpawn(pEntity);
 }
 
+void DisableAmmoWeaponSound(IConVar* var, const char* pOldValue, float fOldValue)
+{
+	if (serverDLL.ORIG_PickupAmmoPTR == nullptr)
+	{
+		ConWarning("command has no effect!");
+		return;
+	}
+
+	char* oldText = (char*)(serverDLL.ORIG_PickupAmmoPTR);
+	if (((ConVar*)var)->GetBool())
+		strcpy(oldText, "PLAY AG");
+	else
+		strcpy(oldText, "BaseCombatCharacter.AmmoPickup");
+}
+
+ConVar y_spt_disable_ammo_pickup_sound("y_spt_disable_ammo_pickup_sound",
+                                         "0",
+                                         FCVAR_ARCHIVE,
+                                         "Disables weapon pickup sounds.",
+                                         DisableAmmoWeaponSound);
+
 __declspec(naked) void ServerDLL::HOOKED_MiddleOfSlidingFunction()
 {
 	/**
@@ -272,6 +293,25 @@ void ServerDLL::Hook(const std::wstring& moduleName,
 	GET_HOOKEDFUTURE(CGameMovement__GetPlayerMins);
 	GET_HOOKEDFUTURE(SetPredictionRandomSeed);
 	GET_FUTURE(CGameMovement__DecayPunchAngle);
+	DEF_FUTURE(PickupAmmoPTR);
+	GET_FUTURE(PickupAmmoPTR);
+
+	if (ORIG_PickupAmmoPTR != nullptr)
+	{
+		DWORD dwOldProtect;
+		VirtualProtect(ORIG_PickupAmmoPTR, 30, PAGE_EXECUTE_READWRITE, &dwOldProtect);
+	}
+
+	if (DoesGameLookLikeHDTF())
+	{
+		DEF_FUTURE(HDTF_Cap);
+		GET_HOOKEDFUTURE(HDTF_Cap);
+		if (ORIG_HDTF_Cap)
+		{
+			byte* offset = (byte*)((uint)ORIG_HDTF_Cap + 0x1);
+			ORIG_HDTF_Cap_JumpTo = (uint)((uint)ORIG_HDTF_Cap + 0x2 + *offset);
+		}
+	}
 
 	if (DoesGameLookLikePortal())
 	{
@@ -381,6 +421,11 @@ void ServerDLL::Hook(const std::wstring& moduleName,
 			off1M_nOldButtons = 2;
 			off2M_nOldButtons = 40;
 			break;
+
+		case 20:
+			off1M_nOldButtons = 2;
+			off2M_nOldButtons = 40;
+			break;
 		}
 	}
 	else
@@ -437,6 +482,11 @@ void ServerDLL::Hook(const std::wstring& moduleName,
 		case 8:
 			off1M_bDucked = 1;
 			off2M_bDucked = 3416;
+			break;
+
+		case 9:
+			off1M_bDucked = 2;
+			off2M_bDucked = 4256;
 			break;
 		}
 	}
@@ -604,6 +654,10 @@ void ServerDLL::Unhook()
 void ServerDLL::Clear()
 {
 	IHookableNameFilter::Clear();
+	EngineConCmd("y_spt_disable_ammo_pickup_sound 0");
+	ORIG_PickupAmmoPTR = nullptr;
+	ORIG_HDTF_Cap = nullptr;
+	ORIG_HDTF_Cap_JumpTo = 0x0;
 	ORIG_CheckJumpButton = nullptr;
 	ORIG_FinishGravity = nullptr;
 	ORIG_PlayerRunCommand = nullptr;
@@ -656,6 +710,7 @@ void ServerDLL::TracePlayerBBox(const Vector& start,
 	overrideMinMax = false;
 }
 
+
 float ServerDLL::TraceFirePortal(trace_t& tr, const Vector& startPos, const Vector& vDirection)
 {
 	auto weapon = serverDLL.GetActiveWeapon(GetServerPlayer());
@@ -672,6 +727,28 @@ float ServerDLL::TraceFirePortal(trace_t& tr, const Vector& startPos, const Vect
 
 	return ORIG_TraceFirePortal(
 	    weapon, 0, false, startPos, vDirection, tr, vFinalPosition, qFinalAngles, PORTAL_PLACED_BY_PLAYER, true);
+}
+
+_declspec(naked) void ServerDLL::HOOKED_HDTF_Cap() 
+{
+	__asm {
+		pushad;
+		pushfd;
+	}
+
+	if (y_spt_hdtf_uncap.GetBool()) __asm
+	{
+		popfd;
+		popad;
+		jmp serverDLL.ORIG_HDTF_Cap_JumpTo;
+	}
+
+	else __asm
+	{
+		popfd;
+		popad;
+		jmp serverDLL.ORIG_HDTF_Cap;
+	}
 }
 
 const Vector& __fastcall ServerDLL::HOOKED_CGameMovement__GetPlayerMaxs(void* thisptr, int edx)
@@ -707,6 +784,7 @@ void __cdecl ServerDLL::HOOKED_SetPredictionRandomSeed(void* usercmd)
 
 bool __fastcall ServerDLL::HOOKED_CheckJumpButton_Func(void* thisptr, int edx)
 {
+
 	const int IN_JUMP = (1 << 1);
 
 	int* pM_nOldButtons = NULL;

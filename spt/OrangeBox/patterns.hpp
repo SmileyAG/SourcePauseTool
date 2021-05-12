@@ -186,7 +186,9 @@ namespace patterns
 		    "2257546",
 		    "55 8B EC A1 ?? ?? ?? ?? 83 EC 0C F3 0F 10 4D 08 0F 57 D2 83 78 30 00 56 8B F1 74 1F F3 0F 10 46 1C 0F 2F D0",
 		    "5377866",
-		    "55 8B EC A1 ?? ?? ?? ?? 83 EC 0C F3 0F 10 4D 08 F3 0F 10 15 ?? ?? ?? ?? 83 78 30 00 56 8B F1 74 1F F3 0F 10 46 1C");
+		    "55 8B EC A1 ?? ?? ?? ?? 83 EC 0C F3 0F 10 4D 08 F3 0F 10 15 ?? ?? ?? ?? 83 78 30 00 56 8B F1 74 1F F3 0F 10 46 1C",
+			"BMS_Retail",
+			"55 8B EC 83 EC 0C D9 45 08 56 51 D9 1C 24 8B F1 E8 ?? ?? ?? ?? D9 55 08 D9 EE DF F1 DD D8 73 50 8B 0D ?? ?? ?? ?? 8D 55 F4");
 		PATTERNS(
 		    CreateMove,
 		    "5135",
@@ -198,7 +200,9 @@ namespace patterns
 		    "2257546",
 		    "55 8B EC 83 EC 54 53 56 8B 75 08 B8 ?? ?? ?? ?? F7 EE 57 03 D6 8B F9 C1 FA 06 8B CE 8B C2 C1 E8 1F",
 		    "2257546-hl1",
-		    "55 8B EC 83 EC 50 53 8B 5D 08 B8 ?? ?? ?? ?? F7 EB 56 03 D3 C1 FA 06 8B C2 C1 E8 1F 03 C2 8B D3");
+		    "55 8B EC 83 EC 50 53 8B 5D 08 B8 ?? ?? ?? ?? F7 EB 56 03 D3 C1 FA 06 8B C2 C1 E8 1F 03 C2 8B D3",
+			"BMS-Retail",
+			"55 8B EC 83 EC 54 53 56 8B 75 08 B8 ?? ?? ?? ?? F7 EE 57 03 D6 8B F9 C1 FA 06 8B CE 8B C2 C1 E8 1F 03 C2 6B C0 5A");
 		PATTERNS(
 		    MiddleOfCAM_Think,
 		    "5135",
@@ -275,6 +279,13 @@ namespace patterns
 		    CHudDamageIndicator__GetDamagePosition,
 		    "5135",
 		    "83 EC 18 E8 ?? ?? ?? ?? e8 ?? ?? ?? ?? 8B 08 89 4C 24 0C 8B 50 04 6A 00 89 54 24 14 8B 40 08 6A 00 8D 4C 24 08 51 8D 54 24 18 52 89 44 24 24");
+		PATTERNS(
+			HDTF_MiddleOfViewBobFuncStart, 
+			"first", 
+			"F3 0F 10 86 ?? ?? ?? ?? F3 0F 58 03");
+		PATTERNS(HDTF_MiddleOfViewRollFunc, "first", "74 ?? E8 ?? ?? ?? ?? 8B 86 ?? ?? ?? ??");
+		PATTERNS(PickupWeaponPTR, "1", "50 6c 61 79 65 72 2e 50 69 63 6b 75 70 57 65 61 70 6f 6e");
+
 	} // namespace client
 
 	namespace server
@@ -320,7 +331,10 @@ namespace patterns
 		    "icemod2013",
 		    "55 8B EC 83 EC 18 56 8B F1 8B 4E 04 80 B9 50 0A 00 00 00 74 0E 8B 46 08 83 48 28 02 32 C0 5E 8B E5 5D C3 F3 0F 10 89 D8 0D 00 00",
 		    "missinginfo1_6",
-		    "55 8B EC 83 EC 1C 56 8B F1 8B 4E 04 80 B9 ?? ?? ?? ?? ?? 74 0E 8B 76 08 83 4E 28 02 32 C0 5E 8B E5");
+		    "55 8B EC 83 EC 1C 56 8B F1 8B 4E 04 80 B9 ?? ?? ?? ?? ?? 74 0E 8B 76 08 83 4E 28 02 32 C0 5E 8B E5",
+			"hdtf",
+			"55 8B EC 83 EC 30 56 8B F1 8B 8E ?? ?? ?? ?? 80 B9 ?? ?? 00 00 00 74 ?? 8B 46 ?? 83 48 ?? 02 32 C0 5E 8B E5 5D C3 E8 ?? ?? ?? ??");
+		PATTERNS(HDTF_Cap, "first", "74 ?? 3C 08 74 ?? 3C 0A");
 		PATTERNS(
 		    FinishGravity,
 		    "bms",
@@ -340,7 +354,9 @@ namespace patterns
 		    "missinginfo1_4_7",
 		    "55 8B EC 83 EC 0C 89 4D F8 8B 45 F8 8B 48 08 D9 05 ?? ?? ?? ?? D9 81 ?? ?? ?? ?? DA E9 DF E0 F6 C4 44",
 		    "missinginfo1_6",
-		    "8B 51 04 D9 82 ?? ?? ?? ?? D9 EE D9 C0 DD EA DF E0 DD D9 F6 C4 44 7A 3F D9 82 ?? ?? ?? ?? DA E9");
+		    "8B 51 04 D9 82 ?? ?? ?? ?? D9 EE D9 C0 DD EA DF E0 DD D9 F6 C4 44 7A 3F D9 82 ?? ?? ?? ?? DA E9",
+			"hdtf",
+			"55 8B EC 51 F3 0F 10 0D ?? ?? ?? ?? 57 8B F9 8B 57 ?? F3 0F 10 82 ?? ?? ?? ??");
 		PATTERNS(
 		    PlayerRunCommand,
 		    "5135",
@@ -463,6 +479,9 @@ namespace patterns
 		         "5135",
 		         "8B 80 24 27 00 00 8B CD 8B A9 24 27 00 00 89 44 24 3C");
 		PATTERNS(EndOfTeleportTouchingEntity, "5135", "E8 E3 CC DB FF 8D 8C 24 B8 00 00 00 E8 17 45 F5 FF");
+		PATTERNS(PickupAmmoPTR,
+		         "1",
+		         "42 61 73 65 43 6f 6d 62 61 74 43 68 61 72 61 63 74 65 72 2e 41 6d 6d 6f 50 69 63 6b 75 70");
 	} // namespace server
 
 	namespace vguimatsurface
@@ -470,11 +489,15 @@ namespace patterns
 		PATTERNS(
 		    StartDrawing,
 		    "5135",
-		    "55 8B EC 83 E4 C0 83 EC 38 80 ?? ?? ?? ?? ?? ?? 56 57 8B F9 75 57 8B ?? ?? ?? ?? ?? C6 ?? ?? ?? ?? ?? ?? FF ?? 8B 10 6A 00 8B C8 8B 42 20");
+		    "55 8B EC 83 E4 C0 83 EC 38 80 ?? ?? ?? ?? ?? ?? 56 57 8B F9 75 57 8B ?? ?? ?? ?? ?? C6 ?? ?? ?? ?? ?? ?? FF ?? 8B 10 6A 00 8B C8 8B 42 20",
+			"BMS-Retail",
+			"55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 ?? ?? ?? ?? 50 83 EC 14 56 57 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4 64 A3 ?? ?? ?? ?? 8B F9 80 3D ?? ?? ?? ?? 00");
 		PATTERNS(
 		    FinishDrawing,
 		    "5135",
-		    "56 6A 00 E8 ?? ?? ?? ?? 8B ?? ?? ?? ?? ?? 8B 01 8B ?? ?? ?? ?? ?? 83 C4 04 FF D2 8B F0 85 F6 74 09 8B 06 8B 50 08 8B CE FF D2");
+		    "56 6A 00 E8 ?? ?? ?? ?? 8B ?? ?? ?? ?? ?? 8B 01 8B ?? ?? ?? ?? ?? 83 C4 04 FF D2 8B F0 85 F6 74 09 8B 06 8B 50 08 8B CE FF D2",
+			"BMS-Retail",
+			"55 8B EC 6A FF 68 ?? ?? ?? ?? 64 A1 ?? ?? ?? ?? 50 83 EC 0C 53 56 57 A1 ?? ?? ?? ?? 33 C5 50 8D 45 F4");
 	} // namespace vguimatsurface
 
 	namespace inputsystem
