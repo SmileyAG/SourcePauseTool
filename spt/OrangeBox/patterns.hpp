@@ -279,6 +279,8 @@ namespace patterns
 		    ResetToneMapping,
 		    "5135",
 		    "8B 0D ?? ?? ?? ?? 8B 01 8B 90 7C 01 00 00 56 FF D2 8B F0 85 F6 74 09 8B 06 8B 50 08 8B CE FF D2 8B 06 D9 44 24 08",
+		    "5377866",
+		    "55 8B EC 8B 0D 4C 58 4D 10 56 8B 01 FF 90 88 01 00 00 8B F0 85 F6 74 07 8B 06 8B CE FF 50 08 8B 06 D9 45 08",
 		    "1910503",
 		    "55 8B EC 8B 0D ?? ?? ?? ?? 8B 01 8B 90 88 01 00 00 56 FF D2 8B F0 85 F6 74 09 8B 06 8B 50 08 8B CE FF D2 8B 06 F3 0F 10 45 08");
 	} // namespace client
